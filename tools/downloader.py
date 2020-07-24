@@ -314,7 +314,10 @@ def try_retrieve(reporter, destination, file, num_attempts, start_download):
         success = True
 
     if not actual_hash:
-        os.remove(destination)
+        try:
+            os.remove(destination)
+        except OSError:
+            reporter.log_error("Remoe failed: {}", destination)
 
     reporter.print()
     return success
@@ -393,20 +396,20 @@ if __name__ == '__main__':
 
     files = []
 
-    if args.type == 'prerequisites' or args.type is 'all':
+    if args.type == 'prerequisites' or args.type == 'all':
         with open('prerequisites.txt') as file:
             for line in file.read().splitlines():
-                if line != '':
+                if line:
                     files.append(FileSourceHttp(line))
-    if args.type == 'ci_dependencies' or args.type is 'all':
+    if args.type == 'ci_dependencies' or args.type == 'all':
         with open('ci_dependencies.txt') as file:
             for line in file.read().splitlines():
-                if line != '':
+                if line:
                     files.append(FileSourceHttp(line))
-    if args.type == 'packages' or args.type is 'all':
+    if args.type == 'packages' or args.type == 'all':
         with open('packages.txt') as file:
             for line in file.read().splitlines():
-                if line != '':
+                if line:
                     files.append(FileSourceHttp(line))
 
     def make_reporter(context):
