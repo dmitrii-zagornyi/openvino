@@ -317,7 +317,7 @@ def try_retrieve(reporter, destination, file, num_attempts, start_download):
         try:
             os.remove(destination)
         except OSError:
-            reporter.log_error("Remoe failed: {}", destination)
+            reporter.log_error("Remove failed: {}", destination)
 
     reporter.print()
     return success
@@ -396,17 +396,17 @@ if __name__ == '__main__':
 
     files = []
 
-    if args.type == 'prerequisites' or args.type == 'all':
+    if args.type in ('prerequisites', 'all'):
         with open('prerequisites.txt') as file:
             for line in file.read().splitlines():
                 if line:
                     files.append(FileSourceHttp(line))
-    if args.type == 'ci_dependencies' or args.type == 'all':
+    if args.type in ('ci_dependencies', 'all'):
         with open('ci_dependencies.txt') as file:
             for line in file.read().splitlines():
                 if line:
                     files.append(FileSourceHttp(line))
-    if args.type == 'packages' or args.type == 'all':
+    if args.type in ('packages', 'all'):
         with open('packages.txt') as file:
             for line in file.read().splitlines():
                 if line:
